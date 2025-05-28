@@ -1,17 +1,17 @@
 import React from 'react'
 
-const Stadistic = ({bueno, neutral, malo}) => {
+const Stadistic = ({votes}) => {
 
-const getAll = () => bueno + neutral + malo
-  const getProm = () =>getAll()===0 ? 0 : (bueno - malo) / getAll() 
-  const getDisparo = () =>getAll()===0 ? 0 : bueno*100 / getAll()
+  const getAll = () => votes.bueno + votes.neutral + votes.malo
+  const getProm = () =>getAll()===0 ? 0 : (votes.bueno - votes.malo) / getAll() 
+  const getDisparo = () =>getAll()===0 ? 0 : votes.bueno*100 / getAll()
 
   return (
     <div>
         <h1>Estadistica</h1>
-      <p>Comentarios Buenos: {bueno}</p>
-      <p>Comentarios Neutrales: {neutral}</p>
-      <p>Comentarios Malos: {malo}</p>
+      <p>Comentarios Buenos: {votes.bueno}</p>
+      <p>Comentarios Neutrales: {votes.neutral}</p>
+      <p>Comentarios Malos: {votes.malo}</p>
       <p>Todos los Comentarios: {getAll()}</p>
       <p>Promedio de Comentarios: {getProm()}%</p>
       <p>Porcentaje de Comentarios Buenos: {getDisparo()}%</p>
