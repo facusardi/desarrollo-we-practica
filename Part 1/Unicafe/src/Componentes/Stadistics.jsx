@@ -8,12 +8,18 @@ const Stadistic = ({votes}) => {
   return (
     getAll()=== 0 ? <p>No hay retroalimentacion</p> :
     <div>
-      <StadisticLine text='Comentarios buenos:' value={votes.bueno} />
-      <StadisticLine text='Comentarios neutrales:' value={votes.neutral} />
-      <StadisticLine text='Comentarios malos:' value={votes.malo} />
-      <StadisticLine text='Total de comentarios:' value={getAll()} />
-      <StadisticLine text='Promedio de comentarios:' value={getProm()}/>
-      <StadisticLine text='Porcentaje de comentarios buenos:' value={getDisparo()}/>
+      <table border='1'>
+      <tbody>
+        <StadisticLine text='Comentarios buenos:' value={votes.bueno} />
+        <StadisticLine text='Comentarios neutrales:' value={votes.neutral} />
+        <StadisticLine text='Comentarios malos:' value={votes.malo} />          <StadisticLine text='Total de comentarios:' value={getAll()} />
+        <StadisticLine text='Promedio de comentarios:' value={getProm()}/>
+        <StadisticLine text='Porcentaje de comentarios buenos:' value={getDisparo()}/>
+      </tbody>
+           
+      </table>
+          
+     
     </div>
   )
 }

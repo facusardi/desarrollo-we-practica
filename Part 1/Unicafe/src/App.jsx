@@ -21,9 +21,8 @@ const [votes, setVotes]= useState({
     <div>
       <h1>Dar Retroalimentacion</h1>
       <Button onVote={handleVote} />
-      <h1>Estadisticas</h1>
-      <Stadistic votes={votes}/>
-      
+      <h1>Estadisticas</h1>      
+        <Stadistic votes={votes}/>    
     </div>
   )
 }
