@@ -32,6 +32,9 @@ const App = () => {
       <p>Ha recibido {votos[selected]} votos</p>
       <button onClick= {mostrarAnecdota}>Siguiente Anecdota</button>
       <button onClick= {votarAnecdota}>Votar</button>
+      <h2>Anecdota con mas votos</h2>
+      <p>{anecdotes[votos.indexOf(Math.max(...votos))]}</p>
+      <p>recibio {Math.max(...votos)} votos</p>
     </div>
   )
 }
