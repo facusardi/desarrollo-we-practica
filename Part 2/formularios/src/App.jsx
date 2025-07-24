@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import Filter from './component/Filter';
+import AddPersons from './component/AddPersons';
+import PersonsList from './component/PersonsList';
 
 function App() {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '040-123456' }]);
@@ -24,7 +27,7 @@ function App() {
     
    if (persons.some(person => person.name === newName)) 
     {
-    alert(`${newName} ya esta en la lista`);
+    alert(`${newName} ya está en la lista`);
     return; 
     }
     const personObject = { name: newName, number: newNumber };
@@ -35,26 +38,16 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value = {filter} onChange={handleFilterChange}/>
-      </div>
+      <Filter value={filter} onChange={handleFilterChange}/>
       <h2>Add a New</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <div>debug: {newName}</div> 
+      <AddPersons onSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <ul>
+      {/*<ul>
         {PersonToShow.map((p, i) => (
-          <li key={i}>{p.name}:  {p.number}</li>
+          <li key={i}>{p.name} {p.number}</li>
         ))}
-      </ul>
+      </ul>*/}
+      <PersonsList persons={PersonToShow}/>
     </div>
   );
 }
