@@ -4,6 +4,7 @@ function App() {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '040-123456' }]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [filter, setFilter] = useState('');
 
 
   const handleNameChange = (event) => {
@@ -12,14 +13,18 @@ function App() {
   const handleNumberChange = (event) => {
       setNewNumber(event.target.value);
   };
+  const handleFilterChange = (event) => {
+      setFilter(event.target.value);
+  };
 
+  const PersonToShow = persons.filter((p)=> p.name.toLowerCase().includes(filter.toLowerCase()));
 
   const addPerson = (event) => {
     event.preventDefault();
     
    if (persons.some(person => person.name === newName)) 
     {
-    alert(`${newName} is already added to phonebook`);
+    alert(`${newName} ya esta en la lista`);
     return; 
     }
     const personObject = { name: newName, number: newNumber };
@@ -30,6 +35,10 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value = {filter} onChange={handleFilterChange}/>
+      </div>
+      <h2>Add a New</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -42,8 +51,8 @@ function App() {
       <div>debug: {newName}</div> 
       <h2>Numbers</h2>
       <ul>
-        {persons.map((p, i) => (
-          <li key={i}>{p.name} {p.number}</li>
+        {PersonToShow.map((p, i) => (
+          <li key={i}>{p.name}:  {p.number}</li>
         ))}
       </ul>
     </div>
