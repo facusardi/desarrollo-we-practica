@@ -1,14 +1,23 @@
-import { useState } from 'react';
 import Filter from './component/Filter';
 import AddPersons from './component/AddPersons';
 import PersonsList from './component/PersonsList';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 
 function App() {
-  const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '040-123456' }]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data);
+      });
+  }, []);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -42,11 +51,6 @@ function App() {
       <h2>Add a New</h2>
       <AddPersons onSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      {/*<ul>
-        {PersonToShow.map((p, i) => (
-          <li key={i}>{p.name} {p.number}</li>
-        ))}
-      </ul>*/}
       <PersonsList persons={PersonToShow}/>
     </div>
   );
