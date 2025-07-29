@@ -2,6 +2,8 @@ import React from 'react'
 
 const AddPersons = ({onSubmit, newName, handleNameChange, newNumber, handleNumberChange}) => {
 
+  
+
   return (
     <div>
       <form onSubmit={onSubmit}>

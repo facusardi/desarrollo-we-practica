@@ -3,6 +3,7 @@ import AddPersons from './component/AddPersons';
 import PersonsList from './component/PersonsList';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import personService from './service/PersonService';
 
 
 function App() {
@@ -40,8 +41,11 @@ function App() {
     return; 
     }
     const personObject = { name: newName, number: newNumber };
-    setPersons(persons.concat(personObject));
-    setNewName('');
+    personService.create(personObject).then(returnedPerson =>{
+      setPersons(persons.concat(returnedPerson))
+      setNewName('');
+      setNewNumber('');
+    })
   };
 
   return (
