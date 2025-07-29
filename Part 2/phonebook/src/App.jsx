@@ -6,6 +6,7 @@ import axios from 'axios';
 import personService from './service/PersonService';
 
 
+
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
@@ -29,6 +30,13 @@ function App() {
   const handleFilterChange = (event) => {
       setFilter(event.target.value);
   };
+  const handleDelete = (id, name) => {
+    if(window.confirm('Seguro desa elininar a'+ name +'?'))
+    {
+      personService.deletePerson(id).then(()=>{ setPersons(persons.filter(p => p.id !== id));})
+      .catch(error => { alert('La persona ya no existe en la base de datos')})
+    }
+  }
 
   const PersonToShow = persons.filter((p)=> p.name.toLowerCase().includes(filter.toLowerCase()));
 
@@ -55,7 +63,7 @@ function App() {
       <h2>Add a New</h2>
       <AddPersons onSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <PersonsList persons={PersonToShow}/>
+      <PersonsList persons={PersonToShow} handleDelete={handleDelete}/>
     </div>
   );
 }
