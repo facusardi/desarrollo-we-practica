@@ -41,20 +41,47 @@ function App() {
   const PersonToShow = persons.filter((p)=> p.name.toLowerCase().includes(filter.toLowerCase()));
 
   const addPerson = (event) => {
-    event.preventDefault();
-    
-   if (persons.some(person => person.name === newName)) 
-    {
-    alert(`${newName} ya está en la lista`);
-    return; 
+  event.preventDefault();
+
+  const existingPerson = persons.find(person => person.name === newName);
+
+  const personObject = { name: newName, number: newNumber };
+
+  if (existingPerson) {
+    const confirmUpdate = window.confirm(
+      `${newName} ya está en la lista. ¿Querés reemplazar el número antiguo con uno nuevo?`
+    );
+
+    if (confirmUpdate) {
+      personService
+        .update(existingPerson.id, personObject)
+        .then(updatedPerson => {
+          setPersons(persons.map(p => 
+            p.id !== existingPerson.id ? p : updatedPerson
+          ));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch(error => {
+          alert(`Error: La persona '${newName}' ya no existe en el servidor.`);
+          setPersons(persons.filter(p => p.id !== existingPerson.id));
+        });
+
+      return; 
+    } else {
+      return;
     }
-    const personObject = { name: newName, number: newNumber };
-    personService.create(personObject).then(returnedPerson =>{
-      setPersons(persons.concat(returnedPerson))
+  }
+
+  personService
+    .create(personObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson));
       setNewName('');
       setNewNumber('');
-    })
-  };
+    });
+};
+
 
   return (
     <div>
