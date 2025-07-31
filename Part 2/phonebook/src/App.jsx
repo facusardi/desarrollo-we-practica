@@ -14,6 +14,7 @@ function App() {
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [mensaje, setMensaje]= useState(null)
+  const [tipo, setTipo]= useState('success')
 
   useEffect(() => {
     axios
@@ -61,12 +62,15 @@ function App() {
             p.id !== existingPerson.id ? p : updatedPerson
           ));
           setMensaje(`Se actualizó el número de ${updatedPerson.name}`);
+          setTipo('success');
           setTimeout(() => setMensaje(null), 5000);
           setNewName('');
           setNewNumber('');
         })
         .catch(error => {
-          alert(`Error: La persona '${newName}' ya no existe en el servidor.`);
+          setMensaje(`Error: La persona '${newName}' ya no existe en el servidor.`);
+          setTipo('error');
+          setTimeout(()=> setMensaje(null), 5000);
           setPersons(persons.filter(p => p.id !== existingPerson.id));
         });
 
@@ -81,21 +85,24 @@ function App() {
     .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson));
       setMensaje(`Se agregó a ${returnedPerson.name}`);
+      setTipo('success');
       setTimeout(() => setMensaje(null), 5000);
       setNewName('');
       setNewNumber('');
     })
     .catch(error => {
-      alert('Ocurrió un error al agregar la persona.');
+      setMensaje('Ocurrió un error al agregar la persona.');
+      setTipo('error');
+      setTimeout(() => setMensaje(null), 5000);
     });
 };
 
 
 
   return (
-    <div>
-      <Notification mensaje={mensaje}/>
+    <div>  
       <h2>Phonebook</h2>
+      <Notification mensaje={mensaje} tipo={tipo}/>
       <Filter value={filter} onChange={handleFilterChange}/>
       <h2>Add a New</h2>
       <AddPersons onSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
