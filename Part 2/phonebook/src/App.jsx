@@ -4,7 +4,8 @@ import PersonsList from './component/PersonsList';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import personService from './service/PersonService';
-
+import Notification from './component/Notification';
+import './Notification.css'
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [mensaje, setMensaje]= useState(null)
 
   useEffect(() => {
     axios
@@ -44,7 +46,6 @@ function App() {
   event.preventDefault();
 
   const existingPerson = persons.find(person => person.name === newName);
-
   const personObject = { name: newName, number: newNumber };
 
   if (existingPerson) {
@@ -59,6 +60,8 @@ function App() {
           setPersons(persons.map(p => 
             p.id !== existingPerson.id ? p : updatedPerson
           ));
+          setMensaje(`Se actualizó el número de ${updatedPerson.name}`);
+          setTimeout(() => setMensaje(null), 5000);
           setNewName('');
           setNewNumber('');
         })
@@ -77,14 +80,21 @@ function App() {
     .create(personObject)
     .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson));
+      setMensaje(`Se agregó a ${returnedPerson.name}`);
+      setTimeout(() => setMensaje(null), 5000);
       setNewName('');
       setNewNumber('');
+    })
+    .catch(error => {
+      alert('Ocurrió un error al agregar la persona.');
     });
 };
 
 
+
   return (
     <div>
+      <Notification mensaje={mensaje}/>
       <h2>Phonebook</h2>
       <Filter value={filter} onChange={handleFilterChange}/>
       <h2>Add a New</h2>
