@@ -7,52 +7,34 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState('');
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
-      .then((response) => {
-        setCountries(response.data);
-      });
+      .then(response => setCountries(response.data));
   }, []);
 
   useEffect(() => {
-    const result = countries.filter((country) =>
+    const result = countries.filter(country =>
       country.name.common.toLowerCase().includes(filter.toLowerCase())
     );
     setFilteredCountries(result);
+    setSelectedCountry(null); 
   }, [filter, countries]);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const renderResults = () => {
-    if (filter === '') {
-      return <div>Escribe para buscar un país</div>;
-    }
-
-    if (filteredCountries.length > 10) {
-      return <div>Demasiados resultados, especificá mejor la búsqueda</div>;
-    }
-
-    if (filteredCountries.length > 1) {
-      return <CountryList countries={filteredCountries} />;
-    }
-
-    if (filteredCountries.length === 1) {
-      return <CountryDetails country={filteredCountries[0]} />;
-    }
-
-    return <div>No se encontraron resultados</div>;
-  };
-
   return (
     <div>
-      <h1>Country Finder</h1>
-      <div>
-        Find countries: <input value={filter} onChange={handleFilterChange} />
-      </div>
-      {renderResults()}
+      <h1>Find Countries</h1>
+      <input value={filter} onChange={handleFilterChange} />
+      <CountryList countries={filteredCountries} onSelectCountry={setSelectedCountry} />
+      {selectedCountry
+        ? <CountryDetails country={selectedCountry} />
+        : filteredCountries.length === 1 && <CountryDetails country={filteredCountries[0]} />
+      }
     </div>
   );
 }

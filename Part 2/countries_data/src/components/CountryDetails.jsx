@@ -5,8 +5,8 @@ const CountryDetails = ({country}) => {
      <div>
       <h2>{country.name.common}</h2>
       <p>Capital: {country.capital?.[0]}</p>
-      <p>Área: {country.area} km²</p>
-      <h4>Languages:</h4>
+      <p>Area: {country.area} km²</p>
+      <h4>Languaje/es:</h4>
       <ul>
         {Object.values(country.languages).map((lang) => (
           <li key={lang}>{lang}</li>
